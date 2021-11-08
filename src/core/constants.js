@@ -1,0 +1,5 @@
+export const TEXT = 'text'
+export const DATE = 'date'
+export const RADIO = 'radio'
+export const DROPDOWN = 'dropdown'
+export const SELECT = 'select'
