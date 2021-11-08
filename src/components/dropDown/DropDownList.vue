@@ -7,6 +7,7 @@
       :optLabel="optLabel"
       :isSelected="isSelectedOption(option)"
       @click.native="selectOption(option)"
+      @keypress.native.enter.prevent="selectOption(option)"
     >
       <template #optionItem="props">
         <slot name="optionItem" v-bind="props">
@@ -18,7 +19,7 @@
 </template>
 
 <script>
-import DropDownOption from './DrpDownOption.vue'
+import DropDownOption from './DropDownOption.vue'
 
 export default {
   name: 'DropdownList',

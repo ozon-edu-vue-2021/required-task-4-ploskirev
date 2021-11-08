@@ -1,11 +1,12 @@
 <template>
-  <div @click.stop class="dropdown-wrapper">
+  <div ref="inputWrapper" class="dropdown-wrapper">
     <span class="label-text">{{ label }}</span>
     <input
       :readonly="!useSearch"
       :value="dropDownDisplayValue"
-      @click="openDropDown"
       :class="inputClasses"
+      @click="openDropDown"
+      @keypress.enter.prevent="openDropDown"
       @input="debouncedUpdateSearch"
     />
     <DropDownList
@@ -110,9 +111,21 @@ export default {
       this.searchText = ''
       this.isDropdownOpened = true
     },
-    closeDropDown() {
-      this.searchText = ''
-      this.isDropdownOpened = false
+    checkAbleToClose(event) {
+      if (event) {
+        const target = event.target
+        const condition =
+          target.closest('.dropdown-wrapper') == this.$refs.inputWrapper
+        return !condition ? true : false
+      } else {
+        return true
+      }
+    },
+    closeDropDown(event) {
+      if (this.checkAbleToClose(event)) {
+        this.searchText = ''
+        this.isDropdownOpened = false
+      }
     },
     emitValue(val) {
       this.$emit('selectionUpdated', val)

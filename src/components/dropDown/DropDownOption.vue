@@ -1,5 +1,5 @@
 <template>
-  <div :class="optionClasses">
+  <div tabindex="0" :class="optionClasses">
     <slot name="optionItem" v-bind="item">{{ item[optLabel] }}</slot>
   </div>
 </template>

@@ -1,226 +1,67 @@
 <template>
   <form class="form">
-    <section class="form-block">
-      <h2>Личные данные</h2>
-      <div class="row">
-        <InputText
-          class="input-item"
-          :placeholder="formFieldsData.surname.placeholder"
-          :text="formFieldsData.surname.model"
-          :label="formFieldsData.surname.label"
-          :hasError="formFieldsData.surname.hasError"
-          :errorMessage="formFieldsData.surname.errorMessage"
-          @contentUpdated="updateModel($event, formFieldsData.surname)"
-          @blur="validateForm(formFieldsData.surname)"
-        />
-        <InputText
-          class="input-item"
-          :placeholder="formFieldsData.name.placeholder"
-          :text="formFieldsData.name.model"
-          :label="formFieldsData.name.label"
-          :hasError="formFieldsData.name.hasError"
-          :errorMessage="formFieldsData.name.errorMessage"
-          @contentUpdated="updateModel($event, formFieldsData.name)"
-          @blur="validateForm(formFieldsData.name)"
-        />
-        <InputText
-          class="input-item"
-          :placeholder="formFieldsData.patronym.placeholder"
-          :text="formFieldsData.patronym.model"
-          :label="formFieldsData.patronym.label"
-          :hasError="formFieldsData.patronym.hasError"
-          :errorMessage="formFieldsData.name.errorMessage"
-          @contentUpdated="updateModel($event, formFieldsData.patronym)"
-          @blur="validateForm(formFieldsData.patronym)"
-        />
-        <InputText
-          v-mask="'##.##.####'"
-          class="input-item"
-          :placeholder="formFieldsData.birthday.placeholder"
-          :text="formFieldsData.birthday.model"
-          :label="formFieldsData.birthday.label"
-          :hasError="formFieldsData.birthday.hasError"
-          :errorMessage="formFieldsData.birthday.errorMessage"
-          @contentUpdated="updateModel($event, formFieldsData.birthday)"
-          @blur="validateForm(formFieldsData.birthday)"
-        />
-        <InputText
-          class="input-item"
-          :placeholder="formFieldsData.email.placeholder"
-          :text="formFieldsData.email.model"
-          :label="formFieldsData.email.label"
-          :hasError="formFieldsData.email.hasError"
-          :errorMessage="formFieldsData.email.errorMessage"
-          @contentUpdated="updateModel($event, formFieldsData.email)"
-          @blur="validateForm(formFieldsData.email)"
-        />
-      </div>
-    </section>
-    <section class="form-block">
-      <h2>Пол</h2>
-      <InputRadio
-        class="input-item"
-        :name="formFieldsData.gender.label"
-        :options="formFieldsData.gender.options"
-        @selectionUpdated="updateModel($event, formFieldsData.gender)"
-      />
-    </section>
-    <section class="form-block">
-      <h2>Паспортные данные</h2>
-      <DropDownInput
-        class="input-item"
-        :label="formFieldsData.citizenships.label"
-        :options="formFieldsData.citizenships.options"
-        :selected="formFieldsData.citizenships.model"
-        :useSearch="true"
-        :searchFields="['nationality', 'capital']"
-        optKey="id"
-        optLabel="nationality"
-        @selectionUpdated="updateModel($event, formFieldsData.citizenships)"
-      >
-        <template #optionItem="props">
-          <slot name="optionItem" v-bind="props">
-            <div class="myoption-wrapper">
-              <div class="myoption-info">
-                <span class="myoption-info-addon">{{ props['capital'] }}</span>
-                <span class="myoption-info-main">{{
-                  props['nationality']
-                }}</span>
-              </div>
-              <div>{{ props['flag'] }}</div>
-            </div>
-          </slot>
-        </template>
-      </DropDownInput>
-      <div class="row" v-show="formFieldsData.citizenships.model.id !== 8604">
-        <InputText
-          class="input-item"
-          :placeholder="formFieldsData.nameLatin.placeholder"
-          :text="formFieldsData.nameLatin.model"
-          :label="formFieldsData.nameLatin.label"
-          :hasError="formFieldsData.nameLatin.hasError"
-          :errorMessage="formFieldsData.nameLatin.errorMessage"
-          @contentUpdated="updateModel($event, formFieldsData.nameLatin)"
-          @blur="validateForm(formFieldsData.nameLatin)"
-        />
-        <InputText
-          class="input-item"
-          :placeholder="formFieldsData.surnameLatin.placeholder"
-          :text="formFieldsData.surnameLatin.model"
-          :label="formFieldsData.surnameLatin.label"
-          :hasError="formFieldsData.surnameLatin.hasError"
-          :errorMessage="formFieldsData.surnameLatin.errorMessage"
-          @contentUpdated="updateModel($event, formFieldsData.surnameLatin)"
-          @blur="validateForm(formFieldsData.surnameLatin)"
-        />
-      </div>
-      <div class="row">
-        <InputText
-          v-show="formFieldsData.citizenships.model.id === 8604"
-          v-mask="'####'"
-          class="input-item"
-          :placeholder="formFieldsData.passSerial.placeholder"
-          :text="formFieldsData.passSerial.model"
-          :label="formFieldsData.passSerial.label"
-          :hasError="formFieldsData.passSerial.hasError"
-          :errorMessage="formFieldsData.passSerial.errorMessage"
-          @contentUpdated="updateModel($event, formFieldsData.passSerial)"
-          @blur="validateForm(formFieldsData.passSerial)"
-        />
-        <InputText
-          v-mask="formFieldsData.citizenships.model.id === 8604 ? '######' : ''"
-          class="input-item"
-          :placeholder="formFieldsData.passNumber.placeholder"
-          :text="formFieldsData.passNumber.model"
-          :label="formFieldsData.passNumber.label"
-          :hasError="formFieldsData.passNumber.hasError"
-          :errorMessage="formFieldsData.passNumber.errorMessage"
-          @contentUpdated="updateModel($event, formFieldsData.passNumber)"
-          @blur="validateForm(formFieldsData.passNumber)"
-        />
-        <DropDownInput
-          class="input-item"
-          v-show="formFieldsData.citizenships.model.id !== 8604"
-          :label="formFieldsData.passEmitionCountry.label"
-          :options="formFieldsData.passEmitionCountry.options"
-          :selected="formFieldsData.passEmitionCountry.model"
-          :useSearch="true"
-          :searchFields="['nationality', 'capital']"
-          optLabel="nationality"
-          @selectionUpdated="
-            updateModel($event, formFieldsData.passEmitionCountry)
-          "
-        >
-          <template #optionItem="props">
-            <slot name="optionItem" v-bind="props">
-              <div class="myoption-wrapper">
-                <div class="myoption-info">
-                  <span class="myoption-info-addon">{{
-                    props['capital']
-                  }}</span>
-                  <span class="myoption-info-main">{{
-                    props['nationality']
-                  }}</span>
+    <section
+      v-for="section in formData.sections"
+      :key="section.key"
+      class="form-block"
+    >
+      <h2>{{ section.title }}</h2>
+      <div v-for="(row, rowIdx) in section.rows" :key="rowIdx" class="row">
+        <template v-for="(field, fieldTitle) in row.fields">
+          <InputText
+            v-if="isTextField(field)"
+            v-show="isVisibleField(field)"
+            :key="fieldTitle"
+            v-mask="getFieldMask(field)"
+            class="input-item"
+            :placeholder="field.placeholder"
+            :text="field.model"
+            :label="field.label"
+            :hasError="field.hasError"
+            :errorMessage="field.errorMessage"
+            @contentUpdated="updateModel($event, field)"
+            @blur="validateField(field)"
+          />
+          <InputRadio
+            v-if="isRadioField(field)"
+            v-show="isVisibleField(field)"
+            :key="fieldTitle"
+            class="input-item"
+            :name="field.label"
+            :options="field.options"
+            @selectionUpdated="updateModel($event, field)"
+          />
+          <DropDownInput
+            v-if="isDropDownField(field)"
+            v-show="isVisibleField(field)"
+            :key="fieldTitle"
+            class="input-item"
+            :label="field.label"
+            :options="field.options"
+            :selected="field.model"
+            :useSearch="field.withSearch"
+            :searchFields="field.searchFields"
+            :optKey="field.optKey"
+            :optLabel="field.optLabel"
+            @selectionUpdated="updateModel($event, field)"
+          >
+            <template v-if="hasSlot(fieldTitle)" #optionItem="props">
+              <slot name="optionItem" v-bind="props">
+                <div class="myoption-wrapper">
+                  <div class="myoption-info">
+                    <span class="myoption-info-addon">{{
+                      props[constants.CAPITAL]
+                    }}</span>
+                    <span class="myoption-info-main">{{
+                      props[constants.NATIONALITY]
+                    }}</span>
+                  </div>
+                  <div>{{ props[constants.FLAG] }}</div>
                 </div>
-                <div>{{ props['flag'] }}</div>
-              </div>
-            </slot>
-          </template>
-        </DropDownInput>
-
-        <DropDownInput
-          class="input-item"
-          v-show="formFieldsData.citizenships.model.id !== 8604"
-          :label="formFieldsData.passType.label"
-          :options="formFieldsData.passType.options"
-          :selected="formFieldsData.passType.model"
-          optKey="id"
-          optLabel="type"
-          @selectionUpdated="updateModel($event, formFieldsData.passType)"
-        />
-        <InputText
-          v-show="formFieldsData.citizenships.model.id === 8604"
-          v-mask="'##.##.####'"
-          class="input-item"
-          :placeholder="formFieldsData.passEmissionDate.placeholder"
-          :text="formFieldsData.passEmissionDate.model"
-          :label="formFieldsData.passEmissionDate.label"
-          :hasError="formFieldsData.passEmissionDate.hasError"
-          :errorMessage="formFieldsData.passEmissionDate.errorMessage"
-          @contentUpdated="updateModel($event, formFieldsData.passEmissionDate)"
-          @blur="validateForm(formFieldsData.passEmissionDate)"
-        />
-      </div>
-    </section>
-    <section class="form-block">
-      <h2>Меняли ли фамилию или имя?</h2>
-      <InputRadio
-        class="input-item"
-        :name="formFieldsData.isChangedName.label"
-        :options="formFieldsData.isChangedName.options"
-        @selectionUpdated="updateModel($event, formFieldsData.isChangedName)"
-      />
-      <div class="row" v-show="formFieldsData.isChangedName.model">
-        <InputText
-          class="input-item"
-          :placeholder="formFieldsData.prevName.placeholder"
-          :text="formFieldsData.prevName.model"
-          :label="formFieldsData.prevName.label"
-          :hasError="formFieldsData.prevName.hasError"
-          :errorMessage="formFieldsData.prevName.errorMessage"
-          @contentUpdated="updateModel($event, formFieldsData.prevName)"
-          @blur="validateForm(formFieldsData.prevName)"
-        />
-        <InputText
-          class="input-item"
-          :placeholder="formFieldsData.prevSurname.placeholder"
-          :text="formFieldsData.prevSurname.model"
-          :label="formFieldsData.prevSurname.label"
-          :hasError="formFieldsData.prevSurname.hasError"
-          :errorMessage="formFieldsData.prevSurname.errorMessage"
-          @contentUpdated="updateModel($event, formFieldsData.prevSurname)"
-          @blur="validateForm(formFieldsData.prevSurname)"
-        />
+              </slot>
+            </template>
+          </DropDownInput>
+        </template>
       </div>
     </section>
     <input type="submit" value="Отправить" @click.prevent="submitForm" />
@@ -228,14 +69,35 @@
 </template>
 
 <script>
-import citizenships from '@/assets/data/citizenships.json'
-import passportTypes from '@/assets/data/passport-types.json'
-import { checkDate } from '@/core/helpers.js'
-import { TEXT, DATE } from '@/core/constants.js'
-import InputText from '@/components/InputText.vue'
-import InputRadio from '@/components/InputRadio.vue'
-import DropDownInput from '@/components/dropDown/DropDownInput.vue'
+import citizenships from '/src/assets/data/citizenships.json'
+import passportTypes from '/src/assets/data/passport-types.json'
+import { checkDate } from '/src/core/helpers.js'
+import * as constants from '/src/core/constants.js'
+import InputText from '/src/components/InputText.vue'
+import InputRadio from '/src/components/InputRadio.vue'
+import DropDownInput from '/src/components/dropDown/DropDownInput.vue'
 
+const { TEXT, RADIO, DATE, DROPDOWN } = constants
+const {
+  CITIZ,
+  IS_CHANGE_NAME,
+  PASS_COUNTRY_EMIT,
+  SURNAME,
+  NAME,
+  PATRONYM,
+  B_DAY,
+  EMAIL,
+  PASS_SERIAL,
+  PASS_TYPE,
+  NAME_LATIN,
+  SURNAME_LATIN,
+  GENDER,
+  PASS_NUMBER,
+  PASS_DATE_EMIT,
+  PREV_SURNAME,
+  PREV_NAME
+} = constants
+const { EQUAL, NOT_EQUAL, RUS_ID, MALE, FEMALE } = constants
 export default {
   name: 'Form',
   components: {
@@ -245,209 +107,484 @@ export default {
   },
   data() {
     return {
-      formFieldsData: {
-        surname: {
-          type: TEXT,
-          placeholder: 'Иванов',
-          model: '',
-          label: 'Фамилия',
-          validated: true,
-          rules: /^[А-ё]+(-[А-ё]+)*$/,
-          hasError: false,
-          errorMessage: 'Только кириллица и -'
-        },
-        name: {
-          type: TEXT,
-          placeholder: 'Иван',
-          model: '',
-          label: 'Имя',
-          validated: true,
-          rules: /^[А-ё]+(-[А-ё]+)*$/,
-          hasError: false,
-          errorMessage: 'Только кириллица и -'
-        },
-        patronym: {
-          type: TEXT,
-          placeholder: 'Иванович',
-          model: '',
-          label: 'Отчество',
-          validated: true,
-          rules: /^[А-ё]+(-[А-ё]+)*$/,
-          hasError: false,
-          errorMessage: 'Только кириллица и -'
-        },
-        birthday: {
-          type: DATE,
-          placeholder: 'дд.мм.гггг',
-          model: '',
-          label: 'Дата рождения',
-          validated: true,
-          rules: /^\d{2}\.\d{2}\.\d{4}$/,
-          hasError: false,
-          errorMessage: 'Некорректная дата'
-        },
-        email: {
-          type: TEXT,
-          placeholder: 'te-st_@test.ru',
-          model: '',
-          label: ' E-mail',
-          validated: true,
-          rules: /^[\w-]+@[\w-]+\.[\w]+$/,
-          hasError: false,
-          errorMessage: 'Некорректный e-mail'
-        },
-        gender: {
-          label: 'citizenship',
-          model: '',
-          options: [
-            { key: 'male', label: 'Мужской' },
-            { key: 'female', label: 'Женский' }
-          ]
-        },
-        citizenships: {
-          model: '',
-          label: 'Гражданство',
-          options: citizenships
-        },
-        passSerial: {
-          type: TEXT,
-          placeholder: '1234',
-          model: '',
-          label: 'Серия паспорта',
-          validated: true,
-          rules: /^\d{4}$/,
-          hasError: false,
-          errorMessage: '4 символа'
-        },
-        passNumber: {
-          type: TEXT,
-          placeholder: '123456',
-          model: '',
-          label: 'Номер паспорта',
-          validated: true,
-          rules: /^\d{6}$/,
-          hasError: false,
-          errorMessage: '6 символа'
-        },
-        passEmissionDate: {
-          type: DATE,
-          placeholder: 'дд.мм.гггг',
-          model: '',
-          label: 'Дата выдачи',
-          validated: true,
-          rules: /^\d{2}\.\d{2}\.\d{4}$/,
-          hasError: false,
-          errorMessage: 'Некорректная дата'
-        },
-        passEmitionCountry: {
-          model: '',
-          label: 'Страна выдачи',
-          options: citizenships
-        },
-        passType: {
-          type: TEXT,
-          model: '',
-          label: 'Тип паспорта',
-          options: passportTypes
-        },
-        isChangedName: {
-          label: 'changingName',
-          model: '',
-          options: [
-            {
-              key: true,
-              label: 'Да'
-            },
-            {
-              key: false,
-              label: 'Нет'
-            }
-          ]
-        },
-        prevName: {
-          type: TEXT,
-          placeholder: 'Петр',
-          model: '',
-          label: 'Предыдущее имя',
-          validated: true,
-          rules: /^[А-ё]+(-[А-ё]+)*$/,
-          hasError: false,
-          errorMessage: 'Только кириллица и -'
-        },
-        prevSurname: {
-          type: TEXT,
-          placeholder: 'Петров',
-          model: '',
-          label: 'Предыдущая фамилия',
-          validated: true,
-          rules: /^[А-ё]+(-[А-ё]+)*$/,
-          hasError: false,
-          errorMessage: 'Только кириллица и -'
-        },
-        nameLatin: {
-          type: TEXT,
-          placeholder: 'Ivan',
-          model: '',
-          label: 'Имя на латинице',
-          validated: true,
-          rules: /^[A-z]+(-[A-z]+)*$/,
-          hasError: false,
-          errorMessage: 'Только латиница и -'
-        },
-        surnameLatin: {
-          type: TEXT,
-          placeholder: 'Ivanov',
-          model: '',
-          label: 'Фамилия на латинице',
-          validated: true,
-          rules: /^[A-z]+(-[A-z]+)*$/,
-          hasError: false,
-          errorMessage: 'Только латиница и -'
-        }
+      constants,
+      formData: {
+        sections: [
+          {
+            title: 'Личные данные',
+            key: 'personal',
+            rows: [
+              {
+                fields: {
+                  [SURNAME]: {
+                    type: TEXT,
+                    placeholder: 'Иванов',
+                    model: '',
+                    label: 'Фамилия',
+                    validated: true,
+                    rules: /^[А-ё]+(-[А-ё]+)*$/,
+                    hasError: false,
+                    errorMessage: 'Только кириллица и -'
+                  },
+                  [NAME]: {
+                    type: TEXT,
+                    placeholder: 'Иван',
+                    model: '',
+                    label: 'Имя',
+                    validated: true,
+                    rules: /^[А-ё]+(-[А-ё]+)*$/,
+                    hasError: false,
+                    errorMessage: 'Только кириллица и -'
+                  },
+                  [PATRONYM]: {
+                    type: TEXT,
+                    placeholder: 'Иванович',
+                    model: '',
+                    label: 'Отчество',
+                    validated: true,
+                    rules: /^[А-ё]+(-[А-ё]+)*$/,
+                    hasError: false,
+                    errorMessage: 'Только кириллица и -'
+                  },
+                  [B_DAY]: {
+                    type: DATE,
+                    placeholder: 'дд.мм.гггг',
+                    mask: '##.##.####',
+                    model: '',
+                    label: 'Дата рождения',
+                    validated: true,
+                    rules: /^\d{2}\.\d{2}\.\d{4}$/,
+                    hasError: false,
+                    errorMessage: 'Некорректная дата'
+                  },
+                  [EMAIL]: {
+                    type: TEXT,
+                    placeholder: 'te-st_@test.ru',
+                    model: '',
+                    label: ' E-mail',
+                    validated: true,
+                    rules: /^[\w-]+@[\w-]+\.[\w]+$/,
+                    hasError: false,
+                    errorMessage: 'Некорректный e-mail'
+                  }
+                }
+              }
+            ]
+          },
+          {
+            title: 'Пол',
+            key: 'gender',
+            rows: [
+              {
+                fields: {
+                  [GENDER]: {
+                    type: RADIO,
+                    label: GENDER,
+                    model: '',
+                    options: [
+                      { key: MALE, label: 'Мужской' },
+                      { key: FEMALE, label: 'Женский' }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            title: 'Паспортные данные',
+            key: constants.PASS_DATA,
+            rows: [
+              {
+                fields: {
+                  [CITIZ]: {
+                    type: DROPDOWN,
+                    model: '',
+                    label: 'Гражданство',
+                    withSearch: true,
+                    searchFields: [constants.NATIONALITY, constants.CAPITAL],
+                    options: citizenships,
+                    optKey: 'id',
+                    optLabel: constants.NATIONALITY,
+                    linkedFields: [
+                      PASS_SERIAL,
+                      PASS_NUMBER,
+                      PASS_DATE_EMIT,
+                      PASS_COUNTRY_EMIT,
+                      PASS_TYPE,
+                      NAME_LATIN,
+                      SURNAME_LATIN
+                    ]
+                  }
+                }
+              },
+              {
+                fields: {
+                  [PASS_SERIAL]: {
+                    type: TEXT,
+                    placeholder: '1234',
+                    mask: '####',
+                    model: '',
+                    label: 'Серия паспорта',
+                    validated: [
+                      {
+                        [CITIZ]: {
+                          prop: 'id',
+                          rule: EQUAL,
+                          value: RUS_ID
+                        }
+                      }
+                    ],
+                    rules: /^\d{4}$/,
+                    hasError: false,
+                    errorMessage: '4 символа',
+                    visibilityRules: [
+                      {
+                        [CITIZ]: {
+                          prop: 'id',
+                          rule: EQUAL,
+                          value: RUS_ID
+                        }
+                      }
+                    ]
+                  },
+                  [PASS_NUMBER]: {
+                    type: TEXT,
+                    placeholder: '123456',
+                    mask: [
+                      {
+                        [CITIZ]: {
+                          prop: 'id',
+                          value: RUS_ID,
+                          rule: EQUAL,
+                          mask: '######'
+                        }
+                      }
+                    ],
+                    model: '',
+                    label: 'Номер паспорта',
+                    validated: [
+                      {
+                        [CITIZ]: {
+                          prop: 'id',
+                          rule: EQUAL,
+                          value: RUS_ID
+                        }
+                      }
+                    ],
+                    rules: /^\d{6}$/,
+                    hasError: false,
+                    errorMessage: '6 символов'
+                  },
+                  [PASS_DATE_EMIT]: {
+                    type: DATE,
+                    placeholder: 'дд.мм.гггг',
+                    mask: '##.##.####',
+                    model: '',
+                    label: 'Дата выдачи',
+                    validated: [
+                      {
+                        [CITIZ]: {
+                          prop: 'id',
+                          rule: EQUAL,
+                          value: RUS_ID
+                        }
+                      }
+                    ],
+                    rules: /^\d{2}\.\d{2}\.\d{4}$/,
+                    hasError: false,
+                    errorMessage: 'Некорректная дата',
+                    visibilityRules: [
+                      {
+                        [CITIZ]: {
+                          rule: NOT_EQUAL,
+                          value: ''
+                        }
+                      },
+                      {
+                        [CITIZ]: {
+                          prop: 'id',
+                          rule: EQUAL,
+                          value: RUS_ID
+                        }
+                      }
+                    ]
+                  },
+                  [PASS_COUNTRY_EMIT]: {
+                    type: DROPDOWN,
+                    model: '',
+                    label: 'Страна выдачи',
+                    withSearch: true,
+                    searchFields: [constants.NATIONALITY, constants.CAPITAL],
+                    options: citizenships,
+                    optKey: 'id',
+                    optLabel: constants.NATIONALITY,
+                    visibilityRules: [
+                      {
+                        [CITIZ]: {
+                          rule: NOT_EQUAL,
+                          value: ''
+                        }
+                      },
+                      {
+                        [CITIZ]: {
+                          prop: 'id',
+                          rule: NOT_EQUAL,
+                          value: RUS_ID
+                        }
+                      }
+                    ]
+                  },
+                  [PASS_TYPE]: {
+                    type: DROPDOWN,
+                    model: '',
+                    label: 'Тип паспорта',
+                    withSearch: false,
+                    options: passportTypes,
+                    optKey: 'id',
+                    optLabel: 'type',
+                    visibilityRules: [
+                      {
+                        [CITIZ]: {
+                          rule: NOT_EQUAL,
+                          value: ''
+                        }
+                      },
+                      {
+                        [CITIZ]: {
+                          prop: 'id',
+                          rule: NOT_EQUAL,
+                          value: RUS_ID
+                        }
+                      }
+                    ]
+                  },
+                  [NAME_LATIN]: {
+                    type: TEXT,
+                    placeholder: 'Ivan',
+                    model: '',
+                    label: 'Имя на латинице',
+                    validated: [
+                      {
+                        [CITIZ]: {
+                          prop: 'id',
+                          rule: NOT_EQUAL,
+                          value: RUS_ID
+                        }
+                      }
+                    ],
+                    rules: /^[A-z]+(-[A-z]+)*$/,
+                    hasError: false,
+                    errorMessage: 'Только латиница и -',
+                    visibilityRules: [
+                      {
+                        [CITIZ]: {
+                          rule: NOT_EQUAL,
+                          value: ''
+                        }
+                      },
+                      {
+                        [CITIZ]: {
+                          prop: 'id',
+                          rule: NOT_EQUAL,
+                          value: RUS_ID
+                        }
+                      }
+                    ]
+                  },
+                  [SURNAME_LATIN]: {
+                    type: TEXT,
+                    placeholder: 'Ivanov',
+                    model: '',
+                    label: 'Фамилия на латинице',
+                    validated: [
+                      {
+                        [CITIZ]: {
+                          prop: 'id',
+                          rule: NOT_EQUAL,
+                          value: RUS_ID
+                        }
+                      }
+                    ],
+                    rules: /^[A-z]+(-[A-z]+)*$/,
+                    hasError: false,
+                    errorMessage: 'Только латиница и -',
+                    visibilityRules: [
+                      {
+                        [CITIZ]: {
+                          rule: NOT_EQUAL,
+                          value: ''
+                        }
+                      },
+                      {
+                        [CITIZ]: {
+                          prop: 'id',
+                          rule: NOT_EQUAL,
+                          value: RUS_ID
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            title: 'Меняли ли фамилию или имя',
+            key: 'changingName',
+            rows: [
+              {
+                fields: {
+                  [IS_CHANGE_NAME]: {
+                    type: RADIO,
+                    label: IS_CHANGE_NAME,
+                    model: '',
+                    options: [
+                      {
+                        key: true,
+                        label: 'Да'
+                      },
+                      {
+                        key: false,
+                        label: 'Нет'
+                      }
+                    ],
+                    linkedFields: [PREV_NAME, PREV_SURNAME]
+                  }
+                }
+              },
+              {
+                fields: {
+                  [PREV_NAME]: {
+                    type: TEXT,
+                    placeholder: 'Петр',
+                    model: '',
+                    label: 'Предыдущее имя',
+                    validated: [
+                      {
+                        [IS_CHANGE_NAME]: {
+                          rule: EQUAL,
+                          value: true
+                        }
+                      }
+                    ],
+                    rules: /^[А-ё]+(-[А-ё]+)*$/,
+                    hasError: false,
+                    errorMessage: 'Только кириллица и -',
+                    visibilityRules: [
+                      {
+                        [IS_CHANGE_NAME]: {
+                          rule: EQUAL,
+                          value: true
+                        }
+                      }
+                    ]
+                  },
+                  [PREV_SURNAME]: {
+                    type: TEXT,
+                    placeholder: 'Петров',
+                    model: '',
+                    label: 'Предыдущая фамилия',
+                    validated: [
+                      {
+                        [IS_CHANGE_NAME]: {
+                          rule: EQUAL,
+                          value: true
+                        }
+                      }
+                    ],
+                    rules: /^[А-ё]+(-[А-ё]+)*$/,
+                    hasError: false,
+                    errorMessage: 'Только кириллица и -',
+                    visibilityRules: [
+                      {
+                        [IS_CHANGE_NAME]: {
+                          rule: EQUAL,
+                          value: true
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
       }
     }
   },
   created() {
-    this.formFieldsData.citizenships.model = citizenships.find(
-      el => el.id === 8604
-    )
-  },
-  computed: {
-    passNumberRule() {
-      return /^\d{6}$/
-    }
+    this.getField(CITIZ).model = citizenships.find(el => el.id === RUS_ID)
   },
   methods: {
-    updateModel(text, target) {
-      target.model = text
-      if (target === this.formFieldsData.citizenships) {
-        if (target.model.id === 8604) {
-          this.formFieldsData.nameLatin.validated = false
-          this.formFieldsData.surnameLatin.validated = false
-          this.formFieldsData.passNumber.validated = true
-          this.formFieldsData.passSerial.validated = true
-          this.formFieldsData.passEmissionDate.validated = true
-        } else {
-          this.formFieldsData.passNumber.validated = false
-          this.formFieldsData.passSerial.validated = false
-          this.formFieldsData.passEmissionDate.validated = false
-          this.formFieldsData.nameLatin.validated = true
-          this.formFieldsData.surnameLatin.validated = true
-        }
-        this.validateField(this.formFieldsData.passNumber)
+    getField(fieldTitle) {
+      let field = null
+      this.formData.sections.forEach(section => {
+        section.rows.forEach(row => {
+          if (row.fields[fieldTitle]) {
+            field = row.fields[fieldTitle]
+          }
+        })
+      })
+      return field
+    },
+    isTextField(field) {
+      return [TEXT, DATE].some(type => field.type === type)
+    },
+    isRadioField(field) {
+      return field.type === RADIO
+    },
+    isDropDownField(field) {
+      return field.type === DROPDOWN
+    },
+    hasSlot(fieldName) {
+      return [constants.CITIZ, constants.PASS_COUNTRY_EMIT].some(
+        el => fieldName === el
+      )
+    },
+    getFieldMask(field) {
+      if (!field.mask) return ''
+      if (typeof field.mask === 'string') return field.mask
+      if (typeof field.mask === 'object') {
+        const maskObject = field.mask.find(this.checkFieldConditions)
+        const mask = maskObject ? Object.values(maskObject)[0].mask : ''
+        return mask
       }
-      if (target === this.formFieldsData.isChangedName) {
-        if (!target.model) {
-          this.formFieldsData.prevName.validated = false
-          this.formFieldsData.prevSurname.validated = false
-        } else {
-          this.formFieldsData.prevName.validated = true
-          this.formFieldsData.prevSurname.validated = true
-        }
+    },
+    isValidatedField(field) {
+      if (!field.validated) return false
+      if (field.validated === true) return true
+      if (Array.isArray(field.validated)) {
+        const validator = field.validated.find(this.checkFieldConditions)
+        return Boolean(validator)
+      }
+    },
+    isVisibleField(field) {
+      if (!field.visibilityRules) return true
+      return field.visibilityRules.every(this.checkFieldConditions)
+    },
+    checkFieldConditions(rule) {
+      const [[fieldTitle, conditions]] = Object.entries(rule)
+      const fieldObj = this.getField(fieldTitle)
+      const comparingValue = fieldObj.model[conditions.prop] ?? fieldObj.model
+      if (conditions.rule === EQUAL) {
+        return comparingValue === conditions.value
+      } else if (conditions.rule === NOT_EQUAL) {
+        return comparingValue !== conditions.value
+      }
+    },
+    updateModel(newValue, target) {
+      target.model = newValue
+      if (target.linkedFields) {
+        // в связи с работой v-mask пришлось это завернуть в nextTick
+        this.$nextTick(() => {
+          target.linkedFields.forEach(fieldTitle =>
+            this.validateField(this.getField(fieldTitle))
+          )
+        })
       }
     },
     validateField(field) {
-      if (field.model && field.validated) {
+      if (field.model && this.isValidatedField(field)) {
         if (field.type === DATE) {
           field.hasError = !checkDate(field.model)
         } else {
@@ -457,16 +594,47 @@ export default {
         field.hasError = false
       }
     },
-    validateForm() {
+    getFormValidation() {
       let isValidatedForm = true
-      Object.values(this.formFieldsData).forEach(field => {
-        this.validateField(field)
-        field.hasError && (isValidatedForm = false)
+      this.formData.sections.forEach(section => {
+        section.rows.forEach(row => {
+          Object.values(row.fields).forEach(field => {
+            this.validateField(field)
+            field.hasError && (isValidatedForm = false)
+          })
+        })
       })
       return isValidatedForm
     },
+    getFormDataForSubmit() {
+      const result = {
+        surname: this.getField(SURNAME).model,
+        name: this.getField(NAME).model,
+        patronym: this.getField(PATRONYM).model,
+        birthday: this.getField(B_DAY).model,
+        email: this.getField(EMAIL).model,
+        gender: this.getField(GENDER).model,
+        citizenship: this.getField(CITIZ).model,
+        passNumber: this.getField(PASS_NUMBER).model,
+        isChangedName: this.getField(IS_CHANGE_NAME).model
+      }
+      if (result.isChangedName) {
+        result.prevName = this.getField(PREV_NAME).model
+        result.prevSurname = this.getField(PREV_SURNAME).model
+      }
+      if (result.citizenship.id === 8604) {
+        result.passSerial = this.getField(PASS_SERIAL).model
+        result.passEmissionDate = this.getField(PASS_DATE_EMIT).model
+      } else {
+        result.latinName = this.getField(NAME_LATIN).model
+        result.latinSurname = this.getField(SURNAME_LATIN).model
+        result.passEmitionCountry = this.getField(PASS_COUNTRY_EMIT).model
+        result.passType = this.getField(PASS_TYPE).model
+      }
+      return result
+    },
     submitForm() {
-      if (!this.validateForm()) {
+      if (!this.getFormValidation()) {
         console.log('Проверьте корректность заполнения полей')
         this.$notify({
           type: 'warn',
@@ -476,36 +644,13 @@ export default {
         })
         return
       }
-      const result = {
-        surname: this.formFieldsData.surname.model,
-        name: this.formFieldsData.name.model,
-        patronym: this.formFieldsData.patronym.model,
-        birthday: this.formFieldsData.birthday.model,
-        email: this.formFieldsData.email.model,
-        gender: this.formFieldsData.gender.model,
-        citizenship: this.formFieldsData.citizenships.model,
-        passNumber: this.formFieldsData.passNumber.model,
-        isChangedName: this.formFieldsData.isChangedName.model
-      }
-      if (result.isChangedName) {
-        result.prevName = this.formFieldsData.prevName.model
-        result.prevSurname = this.formFieldsData.prevSurname.model
-      }
-      if (this.formFieldsData.citizenships.model.id === 8604) {
-        result.passSerial = this.formFieldsData.passSerial.model
-        result.passEmissionDate = this.formFieldsData.passEmissionDate.model
-      } else {
-        result.latinName = this.formFieldsData.nameLatin.model
-        result.latinSurname = this.formFieldsData.surnameLatin.model
-        result.passEmitionCountry = this.formFieldsData.passEmitionCountry
-        result.passType = this.formFieldsData.passType.model
-      }
+      const result = this.getFormDataForSubmit()
+      console.log(result)
       this.$notify({
         type: 'success',
         group: 'formSubmit',
         title: 'Форма отправлена'
       })
-      console.log(result)
     }
   }
 }
