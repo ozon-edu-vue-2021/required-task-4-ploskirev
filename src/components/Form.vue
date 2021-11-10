@@ -1,5 +1,5 @@
 <template>
-  <form class="form">
+  <form @keypress.enter.prevent class="form">
     <section
       v-for="section in formData.sections"
       :key="section.key"
@@ -64,7 +64,13 @@
         </template>
       </div>
     </section>
-    <input type="submit" value="Отправить" @click.prevent="submitForm" />
+    <input
+      type="submit"
+      value="Отправить"
+      class="submit-button"
+      @click.prevent="submitForm"
+      @keypress.enter="submitForm"
+    />
   </form>
 </template>
 
@@ -717,5 +723,9 @@ input[type='submit']:active {
 
 .myoption-info-main {
   font-size: 14px;
+}
+
+.submit-button:focus {
+  outline: 2px solid rgb(145, 199, 224);
 }
 </style>
