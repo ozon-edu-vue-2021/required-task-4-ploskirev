@@ -1,18 +1,19 @@
 <template>
   <div id="app">
     <Form />
+    <notifications group="formSubmit" position="bottom right" />
   </div>
 </template>
 
 <script>
-import Form from "./components/Form.vue";
+import Form from './components/Form.vue'
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
-    Form,
-  },
-};
+    Form
+  }
+}
 </script>
 
 <style>
@@ -22,12 +23,19 @@ export default {
   background-color: #fafafa;
   padding: 24px;
   box-sizing: border-box;
+  width: 700px;
+  margin: 0 auto;
 }
 
 html,
-body,
+body {
+  height: 100vh;
+  overflow: hidden;
+}
+
 #app {
   height: 100%;
+  overflow-y: auto;
 }
 
 * {
